@@ -28,7 +28,7 @@ class TopLearnerFragment : Fragment(R.layout.fragment_recycler) {
 
         viewModel.getTopLearningUsers()
 
-        viewModel.topLearnersLiveData.observe(this, {
+        viewModel.topLearnersLiveData.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.LOADING -> {
                     loading.show()

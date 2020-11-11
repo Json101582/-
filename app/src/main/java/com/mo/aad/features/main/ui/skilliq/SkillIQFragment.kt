@@ -8,17 +8,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mo.aad.R
 import com.mo.aad.extensions.hide
 import com.mo.aad.extensions.show
-import com.mo.aad.features.main.ui.learning.LearningAdapter
 import com.mo.aad.features.main.viewmodel.MainViewModel
 import com.mo.aad.network.Status
 import kotlinx.android.synthetic.main.fragment_recycler.*
-import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import kotlin.coroutines.CoroutineContext
+
 
 @ExperimentalCoroutinesApi
 @FlowPreview
@@ -31,7 +27,7 @@ class SkillIQFragment : Fragment(R.layout.fragment_recycler) {
 
         viewModel.getTopSkillIQUsers()
 
-        viewModel.topSkillsLiveData.observe(this, {
+        viewModel.topSkillsLiveData.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.LOADING -> {
                     loading.show()
