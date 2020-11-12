@@ -23,7 +23,7 @@ class SkillIQAdapter(val items: List<SkillsScoreUser>) : RecyclerView.Adapter<Sk
     }
 
     override fun onBindViewHolder(holder: SkillIQViewHolder, position: Int) {
-        holder.bind(items.get(position))
+        holder.bind(items[position])
     }
 
     override fun getItemCount(): Int {

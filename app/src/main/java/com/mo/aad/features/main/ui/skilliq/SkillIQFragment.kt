@@ -34,21 +34,23 @@ class SkillIQFragment : LazyFragment() {
 
     override fun lazyInit() {
         viewModel.getTopSkillIQUsers()
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.getTopSkillIQUsers()
+        }
         viewModel.topSkillsLiveData.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.LOADING -> {
-                    loading.show()
+                    swipeRefreshLayout.isRefreshing = true
                 }
                 Status.SUCCESS -> {
-                    loading.hide()
+                    swipeRefreshLayout.isRefreshing = false
                     it.data?.let { items ->
-                        recyclerView.show()
                         recyclerView.layoutManager = LinearLayoutManager(activity)
                         recyclerView.adapter = SkillIQAdapter(items = items)
                     }
                 }
                 Status.ERROR -> {
-                    loading.hide()
+                    swipeRefreshLayout.isRefreshing = false
                     Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
                 }
             }

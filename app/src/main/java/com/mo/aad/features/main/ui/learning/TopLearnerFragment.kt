@@ -34,24 +34,24 @@ class TopLearnerFragment : LazyFragment() {
 
 
     override fun lazyInit() {
-
         viewModel.getTopLearningUsers()
-
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.getTopLearningUsers()
+        }
         viewModel.topLearnersLiveData.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.LOADING -> {
-                    loading.show()
+                    swipeRefreshLayout.isRefreshing = true
                 }
                 Status.SUCCESS -> {
-                    loading.hide()
+                    swipeRefreshLayout.isRefreshing = false
                     it.data?.let { items ->
-                        recyclerView.show()
                         recyclerView.layoutManager = LinearLayoutManager(activity)
                         recyclerView.adapter = LearningAdapter(items = items)
                     }
                 }
                 Status.ERROR -> {
-                    loading.hide()
+                    swipeRefreshLayout.isRefreshing = false
                     Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
                 }
             }
