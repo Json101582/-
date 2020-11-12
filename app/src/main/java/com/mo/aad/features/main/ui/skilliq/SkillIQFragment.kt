@@ -1,13 +1,15 @@
 package com.mo.aad.features.main.ui.skilliq
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mo.aad.R
 import com.mo.aad.extensions.hide
 import com.mo.aad.extensions.show
+import com.mo.aad.features.main.ui.LazyFragment
 import com.mo.aad.features.main.viewmodel.MainViewModel
 import com.mo.aad.network.Status
 import kotlinx.android.synthetic.main.fragment_recycler.*
@@ -18,15 +20,20 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 @ExperimentalCoroutinesApi
 @FlowPreview
-class SkillIQFragment : Fragment(R.layout.fragment_recycler) {
+class SkillIQFragment : LazyFragment() {
 
     private val viewModel: MainViewModel by sharedViewModel()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_recycler,container,false)
+    }
 
+    override fun lazyInit() {
         viewModel.getTopSkillIQUsers()
-
         viewModel.topSkillsLiveData.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.LOADING -> {
