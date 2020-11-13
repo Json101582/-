@@ -2,6 +2,8 @@ package com.mo.aad.koin
 
 import com.mo.aad.features.main.repository.MainRepository
 import com.mo.aad.features.main.viewmodel.MainViewModel
+import com.mo.aad.features.poked.repository.PokedRepository
+import com.mo.aad.features.poked.viewmodel.PokedViewModel
 import com.mo.aad.features.submission.repository.SubmissionRepository
 import com.mo.aad.features.submission.viewmodel.SubmissionViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,4 +19,7 @@ val uiModule = module {
 
     single { SubmissionRepository(get()) }
     viewModel { SubmissionViewModel(get()) }
+
+    single { PokedRepository(get()) }
+    viewModel { PokedViewModel(get()) }
 }

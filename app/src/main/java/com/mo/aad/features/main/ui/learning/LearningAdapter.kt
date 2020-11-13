@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mo.aad.R
+import com.mo.aad.extensions.OnItemViewClickListener
 import com.mo.aad.features.main.data.LearningHoursUser
 import kotlinx.android.synthetic.main.layout_item.view.*
 
-class LearningAdapter(val items: List<LearningHoursUser>) : RecyclerView.Adapter<LearningViewHolder>() {
+class LearningAdapter(val items: List<LearningHoursUser>,var mOnItemClickListener: OnItemViewClickListener) : RecyclerView.Adapter<LearningViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LearningViewHolder {
         return LearningViewHolder(
             itemView = LayoutInflater.from(parent.context).inflate(
@@ -22,7 +23,7 @@ class LearningAdapter(val items: List<LearningHoursUser>) : RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(holder: LearningViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items[position],mOnItemClickListener,position)
     }
 
     override fun getItemCount(): Int {
@@ -32,7 +33,7 @@ class LearningAdapter(val items: List<LearningHoursUser>) : RecyclerView.Adapter
 
 class LearningViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView) {
     @SuppressLint("SetTextI18n")
-    fun bind(item: LearningHoursUser) = with(itemView) {
+    fun bind(item: LearningHoursUser, mOnItemClickListener: OnItemViewClickListener, pos:Int) = with(itemView) {
 
         Glide.with(this)
             .load(item.badgeUrl)
@@ -41,5 +42,10 @@ class LearningViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView)
 
         itemView.tvTitle.text = item.name
         itemView.tvDesc.text = "${item.hours} Learning hours,  ${item.country}"
+        itemView.setOnClickListener {
+            mOnItemClickListener.onItemClick(it,pos)
+        }
     }
 }
+
+

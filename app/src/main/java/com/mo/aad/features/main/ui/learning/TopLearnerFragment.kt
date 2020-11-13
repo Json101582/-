@@ -1,5 +1,6 @@
 package com.mo.aad.features.main.ui.learning
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +8,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mo.aad.R
+import com.mo.aad.extensions.OnItemViewClickListener
 import com.mo.aad.features.main.ui.LazyFragment
+import com.mo.aad.features.main.ui.MainActivity
 import com.mo.aad.features.main.viewmodel.MainViewModel
+import com.mo.aad.features.poked.ui.PokedActivity
 import com.mo.aad.network.Status
 import kotlinx.android.synthetic.main.fragment_recycler.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,7 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 @ExperimentalCoroutinesApi
 @FlowPreview
-class TopLearnerFragment : LazyFragment() {
+class TopLearnerFragment : LazyFragment(), OnItemViewClickListener {
 
     private val viewModel: MainViewModel by sharedViewModel()
     override fun onCreateView(
@@ -45,7 +49,7 @@ class TopLearnerFragment : LazyFragment() {
                     swipeRefreshLayout.isRefreshing = false
                     it.data?.let { items ->
                         recyclerView.layoutManager = LinearLayoutManager(activity)
-                        recyclerView.adapter = LearningAdapter(items = items)
+                        recyclerView.adapter = LearningAdapter(items = items,this)
                     }
                 }
                 Status.ERROR -> {
@@ -54,6 +58,11 @@ class TopLearnerFragment : LazyFragment() {
                 }
             }
         })
+    }
+
+    override fun onItemClick(itemView: View, position: Int) {
+        val mainIntent = Intent(activity, PokedActivity::class.java)
+        startActivity(mainIntent)
     }
 
 }

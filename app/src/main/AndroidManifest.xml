@@ -20,10 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".features.main.ui.MainActivity" />
         <activity android:name=".features.submission.ui.SubmissionActivity" />
-
+        <activity android:name=".features.poked.ui.PokedActivity"
+            android:theme="@style/AppWriteTheme"/>
     </application>
 
 </manifest>
