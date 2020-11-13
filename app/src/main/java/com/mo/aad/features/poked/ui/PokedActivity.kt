@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.gyf.immersionbar.ImmersionBar
-import com.gyf.immersionbar.ktx.destroyImmersionBar
 import com.gyf.immersionbar.ktx.immersionBar
 import com.mo.aad.R
 import com.mo.aad.extensions.OnItemViewClickListener
@@ -63,5 +62,4 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
     override fun onItemClick(itemView: View, position: Int) {
         Toast.makeText(this, position.toString(), Toast.LENGTH_SHORT).show()
     }
-
 }
