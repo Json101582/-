@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.gyf.immersionbar.ImmersionBar
+import com.gyf.immersionbar.ktx.destroyImmersionBar
+import com.gyf.immersionbar.ktx.immersionBar
 import com.mo.aad.R
 import com.mo.aad.extensions.OnItemViewClickListener
 import com.mo.aad.features.poked.viewmodel.PokedViewModel
@@ -15,22 +18,28 @@ import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PokedActivity : AppCompatActivity(),OnItemViewClickListener {
+class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
 
     @ExperimentalCoroutinesApi
     @FlowPreview
-    private val mPokedModel:PokedViewModel by viewModel()
+    private val mPokedModel: PokedViewModel by viewModel()
+    private lateinit var mbar: ImmersionBar
 
     @FlowPreview
     @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_recycler)
+        immersionBar {
+            statusBarColor(R.color.colorAccent)
+            navigationBarColor(R.color.colorPrimary)
+            statusBarDarkFont(true, 0.2f)
+        }
         mPokedModel.getPokedList(20, 0)
         swipeRefreshLayout.setOnRefreshListener {
             mPokedModel.getPokedList(20, 0)
         }
-        mPokedModel.mPokemonLiveData.observe(this,{
+        mPokedModel.mPokemonLiveData.observe(this, {
             when (it.status) {
                 Status.LOADING -> {
                     swipeRefreshLayout.isRefreshing = true
@@ -38,8 +47,9 @@ class PokedActivity : AppCompatActivity(),OnItemViewClickListener {
                 Status.SUCCESS -> {
                     swipeRefreshLayout.isRefreshing = false
                     it.data?.let { items ->
-                        recyclerView.layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
-                        recyclerView.adapter = PokedAdapter(items = items.results,this)
+                        recyclerView.layoutManager =
+                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                        recyclerView.adapter = PokedAdapter(items = items.results, this)
                     }
                 }
                 Status.ERROR -> {
@@ -53,4 +63,5 @@ class PokedActivity : AppCompatActivity(),OnItemViewClickListener {
     override fun onItemClick(itemView: View, position: Int) {
         Toast.makeText(this, position.toString(), Toast.LENGTH_SHORT).show()
     }
+
 }

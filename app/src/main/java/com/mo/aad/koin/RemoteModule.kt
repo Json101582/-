@@ -32,7 +32,7 @@ class DynamicRetrofit {
                  fromUrl
              }
             else -> {
-                testUrl
+                 testUrl
             }
         }
         return Retrofit.Builder()

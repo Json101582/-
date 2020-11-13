@@ -52,5 +52,11 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    //adapter适配器
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+    // 沉寝式状态栏
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
+    //kotlin扩展
+    implementation 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
 
 }
