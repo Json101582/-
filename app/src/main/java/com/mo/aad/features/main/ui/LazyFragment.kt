@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
  * @author Jsonshi
  * @date 2020/11/12
  * <p>
- * Description:
+ * Description:懒加载基类
  */
 abstract class LazyFragment:Fragment() {
     private var isLoaded = false

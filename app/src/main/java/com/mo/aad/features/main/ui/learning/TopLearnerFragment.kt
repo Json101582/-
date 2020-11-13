@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mo.aad.R
-import com.mo.aad.extensions.hide
-import com.mo.aad.extensions.show
 import com.mo.aad.features.main.ui.LazyFragment
 import com.mo.aad.features.main.viewmodel.MainViewModel
 import com.mo.aad.network.Status
