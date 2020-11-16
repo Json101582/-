@@ -1,34 +1,34 @@
 package com.mo.aad.features.poked.ui
 
-import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import android.widget.Toast
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ktx.immersionBar
 import com.mo.aad.R
-import com.mo.aad.extensions.OnItemViewClickListener
 import com.mo.aad.features.poked.viewmodel.PokedViewModel
 import com.mo.aad.network.Status
-import kotlinx.android.synthetic.main.activity_poked.*
+import kotlinx.android.synthetic.main.activity_poked.swipeRefreshLayout
+import kotlinx.android.synthetic.main.activity_poked.titleView
+import kotlinx.android.synthetic.main.activity_poked_detail.*
 import kotlinx.android.synthetic.main.title_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
-@ExperimentalCoroutinesApi
 @FlowPreview
-class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
+@ExperimentalCoroutinesApi
+class PokedDetailActivity : AppCompatActivity(R.layout.activity_poked_detail) {
+
 
     private val mPokedModel: PokedViewModel by viewModel()
-    private lateinit var mPokedAdapter: PokedAdapter
+    private var name: String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_poked)
         //设置状态栏
         immersionBar {
             fullScreen(true)
@@ -37,25 +37,40 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
             statusBarDarkFont(true, 0.2f)
         }
         titleView?.apply {
-            title_tv.text = "宠物秀"
-            title_tv.setTextColor(Color.BLUE)
+            title_tv.text = "宠物信息"
+            title_tv.setTextColor(Color.RED)
         }
-        mPokedModel.getPokedList(20, 0)
-        swipeRefreshLayout.setOnRefreshListener {
-            mPokedModel.getPokedList(20, 0)
+        intent?.let {
+            name = intent.getStringExtra("name")
+            val url = intent.getStringExtra("url")
+            val pos = intent.getStringExtra("pos")
+            Glide.with(this)
+                .load(url)
+                .placeholder(R.drawable.ic_launcher_background)
+                .into(pokedDetailImage)
+            pokedDetailName.text = name
+            pokedDetailAge.text = String.format("下标为%s的%s好可爱",pos,name)
         }
-        mPokedModel.mPokemonLiveData.observe(this, {
+//        sendHttpDetail(name)
+    }
+
+
+    private fun sendHttpDetail(name: String?) {
+        name?.run {
+            mPokedModel.getPokedItem(name)
+            swipeRefreshLayout.setOnRefreshListener {
+                mPokedModel.getPokedItem(name)
+            }
+        }
+        mPokedModel.mPokemonInfoLiveData.observe(this, { it ->
             when (it.status) {
                 Status.LOADING -> {
                     swipeRefreshLayout.isRefreshing = true
                 }
                 Status.SUCCESS -> {
                     swipeRefreshLayout.isRefreshing = false
-                    it.data?.let { items ->
-                        recyclerView.layoutManager =
-                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                        mPokedAdapter = PokedAdapter(items = items.results, this)
-                        recyclerView.adapter = mPokedAdapter
+                    it.data?.let {
+                        Log.e("详情>>>", "onCreate: $it")
                     }
                 }
                 Status.ERROR -> {
@@ -64,13 +79,5 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
                 }
             }
         })
-    }
-
-    override fun onItemClick(itemView: View, position: Int) {
-        val mainIntent = Intent(this@PokedActivity, PokedDetailActivity::class.java)
-        mainIntent.putExtra("name", mPokedAdapter.items[position].name)
-        mainIntent.putExtra("url", mPokedAdapter.items[position].getImageUrl())
-        mainIntent.putExtra("pos", position.toString())
-        startActivity(mainIntent)
     }
 }

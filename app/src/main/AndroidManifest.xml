@@ -13,15 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--沉寝式适配-->
+        <activity android:name=".features.poked.ui.PokedDetailActivity"></activity>
+        <!-- 沉寝式适配 -->
         <meta-data
             android:name="android.max_aspect"
-            android:value="2.4" />
-        <!--适配华为（huawei）刘海屏-->
+            android:value="2.4" /> <!-- 适配华为（huawei）刘海屏 -->
         <meta-data
             android:name="android.notch_support"
-            android:value="true"/>
-        <!--适配小米（xiaomi）刘海屏-->
+            android:value="true" /> <!-- 适配小米（xiaomi）刘海屏 -->
         <meta-data
             android:name="notch.config"
             android:value="portrait|landscape" />
@@ -35,8 +34,9 @@
         </activity>
         <activity android:name=".features.main.ui.MainActivity" />
         <activity android:name=".features.submission.ui.SubmissionActivity" />
-        <activity android:name=".features.poked.ui.PokedActivity"
-            android:theme="@style/AppWriteTheme"/>
+        <activity
+            android:name=".features.poked.ui.PokedActivity"
+            android:theme="@style/AppWriteTheme" />
     </application>
 
 </manifest>
