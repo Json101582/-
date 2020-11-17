@@ -21,4 +21,5 @@ interface PokedService {
 
     @GET("pokemon/{name}")
     suspend fun fetchPokemonInfo(@Path("name") name: String): PokemonInfo
+
 }

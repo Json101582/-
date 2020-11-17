@@ -22,4 +22,5 @@ val uiModule = module {
 
     single { PokedRepository(get()) }
     viewModel { PokedViewModel(get()) }
+
 }

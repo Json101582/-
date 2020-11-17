@@ -40,7 +40,8 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
             title_tv.text = "宠物秀"
             title_tv.setTextColor(Color.BLUE)
         }
-        mPokedModel.getPokedList(20, 0)
+
+       mPokedModel.getPokedList(20, 0)
         swipeRefreshLayout.setOnRefreshListener {
             mPokedModel.getPokedList(20, 0)
         }
@@ -65,6 +66,7 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
             }
         })
     }
+
 
     override fun onItemClick(itemView: View, position: Int) {
         val mainIntent = Intent(this@PokedActivity, PokedDetailActivity::class.java)
