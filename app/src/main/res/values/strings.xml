@@ -11,4 +11,5 @@
     <string name="yes">Yes</string>
     <string name="submission_failure">Submission not successful</string>
     <string name="submission_success">Submission Successful</string>
+    <string name="dao_name">PokemonDao</string>
 </resources>

@@ -19,13 +19,13 @@ class MainRepository(
 
     fun getTopLearnerUsers(): Flow<Resource<List<LearningHoursUser>>> {
         return networkBoundResource(
-            fetch = { learningAPIService.getTopLearnerUsers() },
+            fetch = { learningAPIService.getTopLearnerUsers() }
         )
     }
 
     fun getTopSkillsUsers(): Flow<Resource<List<SkillsScoreUser>>> {
         return networkBoundResource(
-            fetch = { skillIQAPIService.getTopSkillsUsers() },
+            fetch = { skillIQAPIService.getTopSkillsUsers() }
         )
     }
 }

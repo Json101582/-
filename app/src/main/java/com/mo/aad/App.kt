@@ -1,6 +1,7 @@
 package com.mo.aad
 
 import android.app.Application
+import com.mo.aad.koin.persistenceModule
 import com.mo.aad.koin.remoteModule
 import com.mo.aad.koin.uiModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,7 +16,7 @@ class App : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@App)
-            modules(uiModule, remoteModule)
+            modules(uiModule, remoteModule, persistenceModule)
         }
     }
 }

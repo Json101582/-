@@ -40,7 +40,6 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
             title_tv.text = "宠物秀"
             title_tv.setTextColor(Color.BLUE)
         }
-
        mPokedModel.getPokedList(20, 0)
         swipeRefreshLayout.setOnRefreshListener {
             mPokedModel.getPokedList(20, 0)
@@ -74,5 +73,12 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
         mainIntent.putExtra("url", mPokedAdapter.items[position].getImageUrl())
         mainIntent.putExtra("pos", position.toString())
         startActivity(mainIntent)
+    }
+
+
+    fun daoUpdateUi(){
+        mPokedModel.pokemonLiveData.observe(this,{
+            Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+        })
     }
 }

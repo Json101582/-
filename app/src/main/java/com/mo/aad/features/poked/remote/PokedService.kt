@@ -2,6 +2,7 @@ package com.mo.aad.features.poked.remote
 
 import com.mo.aad.features.poked.data.PokemonInfo
 import com.mo.aad.features.poked.data.PokemonResponse
+import com.mo.aad.network.Resource
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -22,4 +23,9 @@ interface PokedService {
     @GET("pokemon/{name}")
     suspend fun fetchPokemonInfo(@Path("name") name: String): PokemonInfo
 
+    @GET("pokemon")
+    suspend fun fetchPokemonList1(
+        @Query("limit") limit: Int = 20,
+        @Query("offset") offset: Int = 0
+    ): Resource<PokemonResponse>
 }

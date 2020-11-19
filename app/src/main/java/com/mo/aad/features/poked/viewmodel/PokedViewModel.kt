@@ -1,8 +1,11 @@
 package com.mo.aad.features.poked.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.mo.aad.extensions.LiveCoroutinesViewModel
 import com.mo.aad.features.poked.data.Pokemon
 import com.mo.aad.features.poked.data.PokemonInfo
 import com.mo.aad.features.poked.data.PokemonResponse
@@ -22,12 +25,13 @@ import kotlinx.coroutines.flow.onEach
  */
 @FlowPreview
 @ExperimentalCoroutinesApi
-class PokedViewModel(private val mPokedRepository: PokedRepository):ViewModel() {
+class PokedViewModel(private val mPokedRepository: PokedRepository): ViewModel() {
      var mPokemonLiveData: MutableLiveData<Resource<PokemonResponse>> = MutableLiveData()
      val mPokemonInfoLiveData: MutableLiveData<Resource<PokemonInfo>> = MutableLiveData()
+     //这是数据库取数据
+     var pokemonLiveData:MutableLiveData<List<Pokemon>> = MutableLiveData()
 
-
-    fun getPokedList(size:Int,page:Int){
+    fun getPokedList(size:Int, page:Int){
        mPokedRepository.getPokedList(size,page).onEach {
            mPokemonLiveData.value = it
        }.launchIn(viewModelScope)
@@ -39,4 +43,15 @@ class PokedViewModel(private val mPokedRepository: PokedRepository):ViewModel() 
           mPokemonInfoLiveData.value = it
       }.launchIn(viewModelScope)
     }
+
+  fun getDaoPokedList(size:Int, page:Int) {
+        this.mPokedRepository.getPokedDaoListData(
+          size,page,{
+                Log.e("走进来>>>", "getDaoPokedList: $it")
+                pokemonLiveData.value = it
+            },{
+                Log.e("走进来>>>错误", "getDaoPokedList: $it")
+            }
+        ).asLiveData()
+  }
 }
