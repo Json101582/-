@@ -1,22 +1,17 @@
 package com.mo.aad.features.poked.repository
 
 
-import androidx.annotation.WorkerThread
-import com.mo.aad.features.poked.dao.PokemonDao
+import android.widget.Toast
+import androidx.lifecycle.liveData
 import com.mo.aad.features.poked.data.Pokemon
 import com.mo.aad.features.poked.data.PokemonInfo
 import com.mo.aad.features.poked.data.PokemonResponse
 import com.mo.aad.features.poked.remote.PokedService
-import com.mo.aad.network.Resource
-import com.mo.aad.network.Status
-import com.mo.aad.network.networkBoundResource
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import com.mo.aad.network.*
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onEach
+import retrofit2.HttpException
+import java.io.IOException
 
 
 /**
@@ -32,7 +27,7 @@ class PokedRepository(
       ) {
    fun getPokedList(size: Int, page: Int): Flow<Resource<PokemonResponse>> {
         return networkBoundResource {
-            pokedService.fetchPokemonList(size, page)
+           pokedService.fetchPokemonList(size, page)
         }
     }
 
@@ -44,72 +39,30 @@ class PokedRepository(
         )
     }
 
-    @WorkerThread
-    fun getPokedListData(
-        size: Int, page: Int, onSuccess: (List<Pokemon>) -> Unit,
-        onError: (String) -> Unit
-    ) = flow {
-        var mPokemon = listOf<Pokemon>()
-//            mPokemonDao.getPokemonList(page_ = page)
-        if (mPokemon.isEmpty()) {
-            val resource = pokedService.fetchPokemonList1(size, page)
-            resource.apply {
-                when (resource.status) {
-                    Status.LOADING -> {
-                    }
-                    Status.SUCCESS -> {
-                        resource.data?.let {
-                            mPokemon = it.results
-                            mPokemon.forEach { pokemon -> pokemon.page = page }
-//                            mPokemonDao.insertPokemonList(mPokemon)
-                            emit(mPokemon)
-                            onSuccess(mPokemon)
-                        }
-                    }
-                    Status.ERROR -> {
-                        resource.message?.let { onError(it) }
-                    }
-                }
-            }
-        } else {
-            emit(mPokemon)
-            onSuccess(mPokemon)
-        }
-    }.flowOn(Dispatchers.IO)
 
-
-    @WorkerThread
-    fun getPokedDaoListData(
-        size: Int, page: Int, onSuccess: (List<Pokemon>) -> Unit,
-        onError: (String) -> Unit
-     ): Flow<Resource<PokemonResponse>>{
-        return flow<Resource<PokemonResponse>> {
-            var mPokemon = listOf<Pokemon>()
-//            var mPokemon = mPokemonDao.getPokemonList(page_ = page)
-            if (mPokemon.isEmpty()) {
-                val resource = networkBoundResource {
-                    pokedService.fetchPokemonList(size, page)
-                }
-                resource.onEach {
-                    when (it.status) {
-                        Status.LOADING -> {}
-                        Status.SUCCESS -> {
-                            it.data?.let { items ->
-                                mPokemon = items.results
-                                mPokemon.forEach { pokemon -> pokemon.page = page }
-//                                mPokemonDao.insertPokemonList(mPokemon)
-                                onSuccess(mPokemon)
-                            }
-                        }
-                        Status.ERROR -> {
-                            onError(it.message!!)
-                        }
-                    }
-                }.flowOn(Dispatchers.IO)
-            } else {
-                onSuccess(mPokemon)
-            }
-        }.flowOn(Dispatchers.IO)
+    //这里是要添加数据库操作的
+    suspend fun getListData(size: Int, page: Int) = liveData{
+       withContext(Dispatchers.IO){
+           val mResponse= pokedService.fetchPokemonList1(size, page)
+           emit(Resource.loading(null))
+           try {
+               emit(Resource.success(mResponse.results))
+           } catch (throwable: Throwable) {
+               when (throwable) {
+                   is TimeoutCancellationException -> {
+                       emit(Resource.error(NETWORK_ERROR_TIMEOUT, null))
+                   }
+                   is IOException -> {
+                       emit(Resource.error(NETWORK_ERROR, null))
+                   }
+                   is HttpException -> {
+                       emit(Resource.error(convertErrorBody(throwable), null))
+                   }
+                   else -> {
+                       emit(Resource.error(UNKNOWN_ERROR, null))
+                   }
+               }
+           }
+       }
     }
-
 }

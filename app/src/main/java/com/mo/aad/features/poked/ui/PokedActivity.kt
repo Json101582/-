@@ -40,7 +40,7 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
             title_tv.text = "宠物秀"
             title_tv.setTextColor(Color.BLUE)
         }
-       mPokedModel.getPokedList(20, 0)
+   /*    mPokedModel.getPokedList(20, 0)
         swipeRefreshLayout.setOnRefreshListener {
             mPokedModel.getPokedList(20, 0)
         }
@@ -63,7 +63,8 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 }
             }
-        })
+        })*/
+        daoUpdateUi()
     }
 
 
@@ -76,9 +77,32 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
     }
 
 
-    fun daoUpdateUi(){
+    //测试数据库操作数据
+    private fun daoUpdateUi(){
+        mPokedModel.getListData(20,0)
+        swipeRefreshLayout.setOnRefreshListener {
+            mPokedModel.getListData(20,0)
+            swipeRefreshLayout.isRefreshing = false
+        }
         mPokedModel.pokemonLiveData.observe(this,{
-            Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+            when (it.status) {
+                Status.LOADING -> {
+                    swipeRefreshLayout.isRefreshing = true
+                }
+                Status.SUCCESS -> {
+                    swipeRefreshLayout.isRefreshing = false
+                    it.data?.let { items->
+                        recyclerView.layoutManager =
+                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                        mPokedAdapter = PokedAdapter(items = items, this)
+                        recyclerView.adapter = mPokedAdapter
+                    }
+                }
+                Status.ERROR -> {
+                    swipeRefreshLayout.isRefreshing = false
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         })
     }
 }

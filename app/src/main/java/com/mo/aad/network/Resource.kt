@@ -1,7 +1,5 @@
 package com.mo.aad.network
 
-import android.util.Log
-
 /*
  * Copyright (C) 2017 The Android Open Source Project
  *

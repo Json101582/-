@@ -16,7 +16,7 @@ const val UNKNOWN_ERROR = "Unknown error"
 fun <Result> networkBoundResource(
     fetch: suspend () -> Result,
 ) = flow<Resource<Result>> {
-
+//    responeData(this,fetch)
     emit(Resource.loading(null))
     try {
         emit(Resource.success(fetch.invoke()))
@@ -38,7 +38,7 @@ fun <Result> networkBoundResource(
     }
 }
 
-private fun convertErrorBody(throwable: HttpException): String {
+fun convertErrorBody(throwable: HttpException): String {
     return try {
         throwable.response()?.errorBody()?.string() ?: UNKNOWN_ERROR
     } catch (exception: Exception) {

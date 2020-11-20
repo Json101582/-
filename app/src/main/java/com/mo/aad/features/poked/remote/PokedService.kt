@@ -27,5 +27,5 @@ interface PokedService {
     suspend fun fetchPokemonList1(
         @Query("limit") limit: Int = 20,
         @Query("offset") offset: Int = 0
-    ): Resource<PokemonResponse>
+    ): PokemonResponse
 }

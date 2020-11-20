@@ -22,19 +22,9 @@ import kotlinx.coroutines.flow.onEach
 @FlowPreview
 @ExperimentalCoroutinesApi
 class PokedNewViewModel(
-    private val mPokedRepository: PokedRepository,
-    private val mPokemonDao: PokemonDao
+    private val mPokedRepository: PokedRepository
 ) : LiveCoroutinesViewModel() {
     //这是数据库取数据
     var pokemonLiveData: MutableLiveData<List<Pokemon>> = MutableLiveData()
 
-    suspend fun getDaoPokedList(size: Int, page: Int) {
-      val  mlist = mPokemonDao.getPokemonList(page_ = page)
-      mPokedRepository.getPokedList(size,page).onEach {
-       it.data?.let { items->
-           pokemonLiveData.value = items.results
-           mPokemonDao.insertPokemonList(items.results)
-       }
-      }.launchIn(viewModelScope)
-    }
 }
