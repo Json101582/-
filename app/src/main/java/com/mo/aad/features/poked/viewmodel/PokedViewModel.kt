@@ -1,5 +1,6 @@
 package com.mo.aad.features.poked.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.mo.aad.features.poked.data.Pokemon
 import com.mo.aad.features.poked.data.PokemonInfo
@@ -8,6 +9,7 @@ import com.mo.aad.features.poked.repository.PokedRepository
 import com.mo.aad.network.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -48,4 +50,5 @@ class PokedViewModel(private val mPokedRepository: PokedRepository) :ViewModel()
               pokemonLiveData =mPokedRepository.getListData(size, page)
         }
     }
+
 }

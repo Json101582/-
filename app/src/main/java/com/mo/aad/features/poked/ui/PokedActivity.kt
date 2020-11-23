@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.gyf.immersionbar.ktx.immersionBar
 import com.mo.aad.R
@@ -16,7 +17,9 @@ import kotlinx.android.synthetic.main.activity_poked.*
 import kotlinx.android.synthetic.main.title_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import okhttp3.internal.notify
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.ext.getOrCreateScope
 
 
 @ExperimentalCoroutinesApi
@@ -40,30 +43,30 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
             title_tv.text = "宠物秀"
             title_tv.setTextColor(Color.BLUE)
         }
-   /*    mPokedModel.getPokedList(20, 0)
-        swipeRefreshLayout.setOnRefreshListener {
-            mPokedModel.getPokedList(20, 0)
-        }
-        mPokedModel.mPokemonLiveData.observe(this, {
-            when (it.status) {
-                Status.LOADING -> {
-                    swipeRefreshLayout.isRefreshing = true
-                }
-                Status.SUCCESS -> {
-                    swipeRefreshLayout.isRefreshing = false
-                    it.data?.let { items ->
-                        recyclerView.layoutManager =
-                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                        mPokedAdapter = PokedAdapter(items = items.results, this)
-                        recyclerView.adapter = mPokedAdapter
-                    }
-                }
-                Status.ERROR -> {
-                    swipeRefreshLayout.isRefreshing = false
-                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-                }
-            }
-        })*/
+//      mPokedModel.getPokedList(20, 0)
+//        swipeRefreshLayout.setOnRefreshListener {
+//            mPokedModel.getPokedList(20, 0)
+//        }
+//        mPokedModel.mPokemonLiveData.observe(this, {
+//            when (it.status) {
+//                Status.LOADING -> {
+//                    swipeRefreshLayout.isRefreshing = true
+//                }
+//                Status.SUCCESS -> {
+//                    swipeRefreshLayout.isRefreshing = false
+//                    it.data?.let { items ->
+//                        recyclerView.layoutManager =
+//                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+//                        mPokedAdapter = PokedAdapter(items = items.results, this)
+//                        recyclerView.adapter = mPokedAdapter
+//                    }
+//                }
+//                Status.ERROR -> {
+//                    swipeRefreshLayout.isRefreshing = false
+//                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        })
         daoUpdateUi()
     }
 

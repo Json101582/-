@@ -14,6 +14,7 @@ import retrofit2.http.Query
  * Description:神兽Api
  */
 interface PokedService {
+
     @GET("pokemon")
     suspend fun fetchPokemonList(
         @Query("limit") limit: Int = 20,
