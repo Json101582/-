@@ -22,6 +22,7 @@ import com.mo.aad.features.poked.data.PokemonInfo
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
+import java.util.*
 
 
 class TypeResponseConverter (
@@ -40,5 +41,15 @@ class TypeResponseConverter (
     val listType = Types.newParameterizedType(List::class.java, PokemonInfo.TypeResponse::class.java)
     val adapter: JsonAdapter<List<PokemonInfo.TypeResponse>> = moshi.adapter(listType)
     return adapter.toJson(type)
+  }
+
+  @TypeConverter
+  fun fromTimestamp(value: Long?): Date? {
+    return if (value == null) null else Date(value)
+  }
+
+  @TypeConverter
+  fun dateToTimestamp(date: Date?): Long? {
+    return date?.time
   }
 }

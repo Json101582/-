@@ -71,11 +71,9 @@ dependencies {
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
     //kotlin扩展
     implementation 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
-
     // moshi
     implementation "com.squareup.moshi:moshi-kotlin:1.11.0"
-    //ApiNetwork
-    implementation "com.github.skydoves:sandwich:1.0.6"
+
 
 
 }
