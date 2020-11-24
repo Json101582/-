@@ -26,7 +26,7 @@ import org.koin.ext.getOrCreateScope
 @FlowPreview
 class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
 
-    private val mPokedModel: PokedViewModel by viewModel()
+    private val mPokedModel by viewModel<PokedViewModel>()
     private lateinit var mPokedAdapter: PokedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,11 +43,11 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
             title_tv.text = "宠物秀"
             title_tv.setTextColor(Color.BLUE)
         }
-//      mPokedModel.getPokedList(20, 0)
+//        mPokedModel.getPokedList(20, 0)
 //        swipeRefreshLayout.setOnRefreshListener {
 //            mPokedModel.getPokedList(20, 0)
 //        }
-//        mPokedModel.mPokemonLiveData.observe(this, {
+//        mPokedModel.mPokemonLiveData1.observe(this, {
 //            when (it.status) {
 //                Status.LOADING -> {
 //                    swipeRefreshLayout.isRefreshing = true
@@ -67,7 +67,8 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
 //                }
 //            }
 //        })
-        daoUpdateUi()
+//        daoUpdateUi()
+          daoUpdateFlowUi()
     }
 
 
@@ -80,14 +81,43 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
     }
 
 
-    //测试数据库操作数据
+    //测试
     private fun daoUpdateUi(){
-        mPokedModel.getListData(20,0)
+        mPokedModel.getListFlowData(20,0)
         swipeRefreshLayout.setOnRefreshListener {
-            mPokedModel.getListData(20,0)
+            mPokedModel.getListFlowData(20,0)
             swipeRefreshLayout.isRefreshing = false
         }
-        mPokedModel.pokemonLiveData.observe(this,{
+        mPokedModel.mPokemonLiveData1.observe(this,{
+            when (it.status) {
+                Status.LOADING -> {
+                    swipeRefreshLayout.isRefreshing = true
+                }
+                Status.SUCCESS -> {
+                    swipeRefreshLayout.isRefreshing = false
+                    it.data?.let { items->
+                        recyclerView.layoutManager =
+                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                        mPokedAdapter = PokedAdapter(items = items.results, this)
+                        recyclerView.adapter = mPokedAdapter
+                    }
+                }
+                Status.ERROR -> {
+                    swipeRefreshLayout.isRefreshing = false
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+
+
+    //测试数据库操作数据
+    private fun daoUpdateFlowUi(){
+        mPokedModel.getListFlowData1(20,0)
+        swipeRefreshLayout.setOnRefreshListener {
+            mPokedModel.getListFlowData1(20,0)
+        }
+        mPokedModel.mPokemonListLiveData.observe(this,{
             when (it.status) {
                 Status.LOADING -> {
                     swipeRefreshLayout.isRefreshing = true

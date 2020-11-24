@@ -21,7 +21,9 @@ val uiModule = module {
     single { SubmissionRepository(get()) }
     viewModel { SubmissionViewModel(get()) }
 
-    single { PokedRepository(get()) }
+    single { PokedRepository(get()
+//        ,get()
+    ) }
     viewModel { PokedViewModel(get()) }
 
 }
