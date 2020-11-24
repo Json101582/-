@@ -1,10 +1,8 @@
 package com.mo.aad.features.poked.repository
 
 
-
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.liveData
-import com.mo.aad.features.poked.dao.PokemonDao
 import com.mo.aad.features.poked.data.Pokemon
 import com.mo.aad.features.poked.data.PokemonInfo
 import com.mo.aad.features.poked.data.PokemonResponse
@@ -25,14 +23,23 @@ import java.io.IOException
 @ExperimentalCoroutinesApi
 @FlowPreview
 class PokedRepository constructor(
-    private val pokedService: PokedService,
-//    private val mDao:PokemonDao
+    private val pokedService: PokedService
       ) {
 
+    //这个是返回基本数据
    fun getPokedList(size: Int, page: Int): Flow<Resource<PokemonResponse>> {
         return networkBoundResource(
             fetch = {
                 pokedService.fetchPokemonList(size, page)
+            }
+        )
+    }
+
+    //这个是由基本数据筛选后的数据
+    fun getPokedChildList(size: Int, page: Int): Flow<Resource<List<Pokemon>>> {
+        return networkBoundResource(
+            fetch = {
+                pokedService.fetchPokemonList(size, page).results
             }
         )
     }
@@ -107,6 +114,7 @@ class PokedRepository constructor(
 //            if (mDaoList.isEmpty()){
                 val mResponse= pokedService.fetchPokemonList1(size, page)
                 try {
+//                    mDao.insertPokemonList(mResponse.results)
                     emit(Resource.success(mResponse.results))
                 } catch (throwable: Throwable) {
                     when (throwable) {

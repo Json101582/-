@@ -2,7 +2,6 @@ package com.mo.aad.features.poked.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.mo.aad.extensions.LiveCoroutinesViewModel
 import com.mo.aad.features.poked.data.Pokemon
 import com.mo.aad.features.poked.data.PokemonInfo
 import com.mo.aad.features.poked.data.PokemonResponse
@@ -38,7 +37,11 @@ class PokedViewModel(private val mPokedRepository: PokedRepository) :ViewModel()
         }.launchIn(viewModelScope)
     }
 
-
+   fun getPokedChildList(size: Int, page: Int){
+       mPokedRepository.getPokedChildList(size, page).onEach {
+           mPokemonListLiveData.value = it
+       }.launchIn(viewModelScope)
+   }
     fun getPokedItem(name: String) {
         mPokedRepository.getPokedItem(name).onEach {
             mPokemonInfoLiveData.value = it
@@ -52,20 +55,20 @@ class PokedViewModel(private val mPokedRepository: PokedRepository) :ViewModel()
         }
     }
 
-    //返回Flow数据强转为livedata
+    //返回Flow最大层json数据强转为livedata
     fun getListFlowData(size: Int, page: Int) {
        mPokedRepository.getListFlowData(size, page).onEach {
                mPokemonLiveData1.value =  it
                     }.launchIn(viewModelScope)
-        Log.e("测试>>>>>>>", "getListFlowData: $mPokemonLiveData1")
+        Log.e("测试>>>>flow>>>", "getListFlowData: $mPokemonLiveData1")
     }
 
 
-    //返回Flow数据强转为livedata
+    //返回Flow最大层但是接收是具体数据强转为livedata
     fun getListFlowData1(size: Int, page: Int) {
         mPokedRepository.getListFlowData1(size, page).onEach {
             mPokemonListLiveData.value =  it
         }.launchIn(viewModelScope)
-        Log.e("测试>>>>>>>", "getListFlowData: $mPokemonLiveData1")
+        Log.e("测试Flow>>>>>>>", "getListFlowData: $mPokemonLiveData1")
     }
 }
