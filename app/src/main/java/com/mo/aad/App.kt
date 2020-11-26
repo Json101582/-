@@ -13,14 +13,13 @@ import org.koin.core.context.stopKoin
 @FlowPreview
 @ExperimentalCoroutinesApi
 class App : Application() {
+
     override fun onCreate() {
         super.onCreate()
+
         startKoin {
             androidContext(this@App)
-            modules(remoteModule)
-            modules(uiModule)
-            modules(persistenceModule)
-//            modules(uiModule, remoteModule, persistenceModule)
+            modules(uiModule, remoteModule, persistenceModule)
         }
     }
 

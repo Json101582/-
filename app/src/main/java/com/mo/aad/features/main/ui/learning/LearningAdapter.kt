@@ -9,7 +9,10 @@ import com.bumptech.glide.Glide
 import com.mo.aad.R
 import com.mo.aad.extensions.OnItemViewClickListener
 import com.mo.aad.features.main.data.LearningHoursUser
+import com.mo.aad.features.poked.ui.PokedDetailActivity
 import kotlinx.android.synthetic.main.layout_item.view.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
 class LearningAdapter(val items: List<LearningHoursUser>,var mOnItemClickListener: OnItemViewClickListener) : RecyclerView.Adapter<LearningViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LearningViewHolder {
@@ -32,6 +35,8 @@ class LearningAdapter(val items: List<LearningHoursUser>,var mOnItemClickListene
 }
 
 class LearningViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView) {
+    @ExperimentalCoroutinesApi
+    @FlowPreview
     @SuppressLint("SetTextI18n")
     fun bind(item: LearningHoursUser, mOnItemClickListener: OnItemViewClickListener, pos:Int) = with(itemView) {
 

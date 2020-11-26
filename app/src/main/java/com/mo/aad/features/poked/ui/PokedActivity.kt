@@ -6,22 +6,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.distinctUntilChanged
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.gyf.immersionbar.ktx.immersionBar
 import com.mo.aad.R
 import com.mo.aad.extensions.OnItemViewClickListener
 import com.mo.aad.features.poked.viewmodel.PokedViewModel
 import com.mo.aad.network.Status
+import com.skydoves.transformationlayout.TransformationLayout
 import kotlinx.android.synthetic.main.activity_poked.*
+import kotlinx.android.synthetic.main.layout_item.view.*
 import kotlinx.android.synthetic.main.title_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import okhttp3.internal.notify
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.qualifier.named
-import org.koin.ext.getOrCreateScope
+
+
 
 
 @ExperimentalCoroutinesApi
@@ -45,32 +45,32 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
             title_tv.text = "宠物秀"
             title_tv.setTextColor(Color.BLUE)
         }
-        mPokedModel.getPokedChildList(20, 0)
-        swipeRefreshLayout.setOnRefreshListener {
-            mPokedModel.getPokedChildList(20, 0)
-        }
-        mPokedModel.mPokemonListLiveData.observe(this, {
-            when (it.status) {
-                Status.LOADING -> {
-                    swipeRefreshLayout.isRefreshing = true
-                }
-                Status.SUCCESS -> {
-                    swipeRefreshLayout.isRefreshing = false
-                    it.data?.let { items ->
-                        recyclerView.layoutManager =
-                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                        mPokedAdapter = PokedAdapter(items = items, this)
-                        recyclerView.adapter = mPokedAdapter
-                    }
-                }
-                Status.ERROR -> {
-                    swipeRefreshLayout.isRefreshing = false
-                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
+//        mPokedModel.getPokedChildList(20, 0)
+//        swipeRefreshLayout.setOnRefreshListener {
+//            mPokedModel.getPokedChildList(20, 0)
+//        }
+//        mPokedModel.mPokemonListLiveData.observe(this, {
+//            when (it.status) {
+//                Status.LOADING -> {
+//                    swipeRefreshLayout.isRefreshing = true
+//                }
+//                Status.SUCCESS -> {
+//                    swipeRefreshLayout.isRefreshing = false
+//                    it.data?.let { items ->
+//                        recyclerView.layoutManager =
+//                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+//                        mPokedAdapter = PokedAdapter(items = items, this)
+//                        recyclerView.adapter = mPokedAdapter
+//                    }
+//                }
+//                Status.ERROR -> {
+//                    swipeRefreshLayout.isRefreshing = false
+//                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        })
 //        daoUpdateUi()
-//          daoUpdateFlowUi()
+          daoUpdateFlowUi()
     }
 
 
@@ -79,7 +79,7 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
         mainIntent.putExtra("name", mPokedAdapter.items[position].name)
         mainIntent.putExtra("url", mPokedAdapter.items[position].getImageUrl())
         mainIntent.putExtra("pos", position.toString())
-        startActivity(mainIntent)
+        transformationLayoutView(this@PokedActivity,itemView.transformationLayout,mainIntent)
     }
 
 
@@ -115,9 +115,9 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
 
     //测试数据库操作数据
     private fun daoUpdateFlowUi(){
-        mPokedModel.getListFlowData1(20,0)
+        mPokedModel.getPokedChildList(20,0)
         swipeRefreshLayout.setOnRefreshListener {
-            mPokedModel.getListFlowData1(20,0)
+            mPokedModel.getPokedChildList(20,0)
         }
         mPokedModel.mPokemonListLiveData.observe(this,{
             when (it.status) {
@@ -139,6 +139,14 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
                 }
             }
         })
+    }
+
+
+    //实现共享动画
+    private fun transformationLayoutView(activity: FragmentActivity, transformationLayout: TransformationLayout,intent: Intent){
+        val bundle = transformationLayout.withActivity(activity, "myTransitionName")
+        intent.putExtra("TransformationParams", transformationLayout.getParcelableParams())
+        startActivity(intent, bundle)
     }
 }
 

@@ -1,5 +1,6 @@
 package com.mo.aad.features.main.ui.learning
 
+
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mo.aad.R
 import com.mo.aad.extensions.OnItemViewClickListener
 import com.mo.aad.features.main.ui.LazyFragment
-import com.mo.aad.features.main.ui.MainActivity
 import com.mo.aad.features.main.viewmodel.MainViewModel
 import com.mo.aad.features.poked.ui.PokedActivity
 import com.mo.aad.network.Status
@@ -63,6 +63,6 @@ class TopLearnerFragment : LazyFragment(), OnItemViewClickListener {
     override fun onItemClick(itemView: View, position: Int) {
         val mainIntent = Intent(activity, PokedActivity::class.java)
         startActivity(mainIntent)
-    }
 
+    }
 }

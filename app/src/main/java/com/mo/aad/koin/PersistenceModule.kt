@@ -37,8 +37,10 @@ val persistenceModule = module {
     }
 
     single {
-        val mAppDatabase = get<AppDatabase>()
-        mAppDatabase.mPokemonDao()
-        mAppDatabase.mPokemonInfoDao()
+        get<AppDatabase>().mPokemonDao()
+    }
+
+    single {
+         get<AppDatabase>().mPokemonInfoDao()
     }
 }
