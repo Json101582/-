@@ -6,14 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.FragmentActivity
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.gyf.immersionbar.ktx.immersionBar
 import com.mo.aad.R
 import com.mo.aad.extensions.OnItemViewClickListener
 import com.mo.aad.features.poked.viewmodel.PokedViewModel
 import com.mo.aad.network.Status
-import com.skydoves.transformationlayout.TransformationLayout
 import kotlinx.android.synthetic.main.activity_poked.*
 import kotlinx.android.synthetic.main.layout_item.view.*
 import kotlinx.android.synthetic.main.title_layout.*
@@ -30,7 +28,9 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
 
     private val mPokedModel:PokedViewModel by viewModel()
     private lateinit var mPokedAdapter: PokedAdapter
-
+    private val gridLayoutManager:GridLayoutManager by lazy {
+        GridLayoutManager(this@PokedActivity,2)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_poked)
@@ -57,8 +57,7 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
 //                Status.SUCCESS -> {
 //                    swipeRefreshLayout.isRefreshing = false
 //                    it.data?.let { items ->
-//                        recyclerView.layoutManager =
-//                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+//                        recyclerView.layoutManager = gridLayoutManager
 //                        mPokedAdapter = PokedAdapter(items = items, this)
 //                        recyclerView.adapter = mPokedAdapter
 //                    }
@@ -79,7 +78,9 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
         mainIntent.putExtra("name", mPokedAdapter.items[position].name)
         mainIntent.putExtra("url", mPokedAdapter.items[position].getImageUrl())
         mainIntent.putExtra("pos", position.toString())
-        transformationLayoutView(this@PokedActivity,itemView.transformationLayout,mainIntent)
+        val bundle = itemView.transformationLayout.withView(itemView, "myTransitionName$position")
+        mainIntent.putExtra("TransformationParams", itemView.transformationLayout.getParcelableParams())
+        startActivity(mainIntent, bundle)
     }
 
 
@@ -98,8 +99,7 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
                 Status.SUCCESS -> {
                     swipeRefreshLayout.isRefreshing = false
                     it.data?.let { items->
-                        recyclerView.layoutManager =
-                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                        recyclerView.layoutManager = gridLayoutManager
                         mPokedAdapter = PokedAdapter(items = items.results, this)
                         recyclerView.adapter = mPokedAdapter
                     }
@@ -127,8 +127,7 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
                 Status.SUCCESS -> {
                     swipeRefreshLayout.isRefreshing = false
                     it.data?.let { items->
-                        recyclerView.layoutManager =
-                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                        recyclerView.layoutManager =  gridLayoutManager
                         mPokedAdapter = PokedAdapter(items = items, this)
                         recyclerView.adapter = mPokedAdapter
                     }
@@ -139,14 +138,6 @@ class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
                 }
             }
         })
-    }
-
-
-    //实现共享动画
-    private fun transformationLayoutView(activity: FragmentActivity, transformationLayout: TransformationLayout,intent: Intent){
-        val bundle = transformationLayout.withActivity(activity, "myTransitionName")
-        intent.putExtra("TransformationParams", transformationLayout.getParcelableParams())
-        startActivity(intent, bundle)
     }
 }
 

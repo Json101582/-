@@ -12,8 +12,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pager.adapter = PagerAdapter(fm = supportFragmentManager)
-        tabLayout.setupWithViewPager(pager)
+        pager?.let {
+            it.adapter = PagerAdapter(fm = supportFragmentManager)
+            tabLayout.setupWithViewPager(it)
+        }
         btnSubmit.setOnClickListener { startActivity(Intent(this, SubmissionActivity::class.java)) }
     }
 }

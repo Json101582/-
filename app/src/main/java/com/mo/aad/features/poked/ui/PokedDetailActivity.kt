@@ -4,9 +4,11 @@ package com.mo.aad.features.poked.ui
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ktx.immersionBar
 import com.mo.aad.R
+import com.skydoves.transformationlayout.TransformationLayout
 import com.skydoves.transformationlayout.onTransformationEndContainer
 import kotlinx.android.synthetic.main.activity_poked.titleView
 import kotlinx.android.synthetic.main.activity_poked_detail.*
@@ -23,7 +25,9 @@ class PokedDetailActivity : AppCompatActivity(R.layout.activity_poked_detail) {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        onTransformationEndContainer(intent.getParcelableExtra("TransformationParams"))
+        val params: TransformationLayout.Params? = intent.getParcelableExtra("TransformationParams")
+        Log.e("TAG", "onCreate: $params")
+        onTransformationEndContainer(params)
         super.onCreate(savedInstanceState)
         //设置状态栏
         immersionBar {
