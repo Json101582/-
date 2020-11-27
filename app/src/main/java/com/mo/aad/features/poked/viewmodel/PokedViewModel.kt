@@ -2,15 +2,11 @@ package com.mo.aad.features.poked.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.mo.aad.features.poked.dao.AppDatabase
-import com.mo.aad.features.poked.dao.PokemonDao
 import com.mo.aad.features.poked.data.Pokemon
 import com.mo.aad.features.poked.data.PokemonInfo
 import com.mo.aad.features.poked.data.PokemonResponse
 import com.mo.aad.features.poked.repository.PokedRepository
 import com.mo.aad.network.Resource
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -23,8 +19,7 @@ import kotlinx.coroutines.launch
  * <p>
  * Description:
  */
-@FlowPreview
-@ExperimentalCoroutinesApi
+
 class PokedViewModel(private val mPokedRepository: PokedRepository) :ViewModel() {
     var mPokemonLiveData: LiveData<Resource<PokemonResponse>> = MutableLiveData()
     val mPokemonInfoLiveData: MutableLiveData<Resource<PokemonInfo>> = MutableLiveData()

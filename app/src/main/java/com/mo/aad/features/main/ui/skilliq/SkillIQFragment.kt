@@ -1,5 +1,6 @@
 package com.mo.aad.features.main.ui.skilliq
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,18 +8,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mo.aad.R
+import com.mo.aad.extensions.OnItemViewClickListener
 import com.mo.aad.features.main.ui.LazyFragment
 import com.mo.aad.features.main.viewmodel.MainViewModel
+import com.mo.aad.features.poked.ui.PokedDetailNewActivity
 import com.mo.aad.network.Status
 import kotlinx.android.synthetic.main.fragment_recycler.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
-@ExperimentalCoroutinesApi
-@FlowPreview
-class SkillIQFragment : LazyFragment() {
+class SkillIQFragment : LazyFragment(),OnItemViewClickListener {
 
     private val viewModel: MainViewModel by sharedViewModel()
 
@@ -44,7 +43,7 @@ class SkillIQFragment : LazyFragment() {
                     swipeRefreshLayout.isRefreshing = false
                     it.data?.let { items ->
                         recyclerView.layoutManager = LinearLayoutManager(activity)
-                        recyclerView.adapter = SkillIQAdapter(items = items)
+                        recyclerView.adapter = SkillIQAdapter(items = items,this)
                     }
                 }
                 Status.ERROR -> {
@@ -53,5 +52,10 @@ class SkillIQFragment : LazyFragment() {
                 }
             }
         })
+    }
+
+    override fun onItemClick(itemView: View, position: Int) {
+        val mainIntent = Intent(activity, PokedDetailNewActivity::class.java)
+        startActivity(mainIntent)
     }
 }

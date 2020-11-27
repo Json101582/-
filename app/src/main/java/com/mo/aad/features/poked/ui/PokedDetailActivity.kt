@@ -13,12 +13,8 @@ import com.skydoves.transformationlayout.onTransformationEndContainer
 import kotlinx.android.synthetic.main.activity_poked.titleView
 import kotlinx.android.synthetic.main.activity_poked_detail.*
 import kotlinx.android.synthetic.main.title_layout.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class PokedDetailActivity : AppCompatActivity(R.layout.activity_poked_detail) {
 
     private var name: String? = null

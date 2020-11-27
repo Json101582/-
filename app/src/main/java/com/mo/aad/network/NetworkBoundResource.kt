@@ -1,7 +1,5 @@
 package com.mo.aad.network
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.*
 import retrofit2.HttpException
@@ -11,8 +9,6 @@ const val NETWORK_ERROR = "Network error"
 const val NETWORK_ERROR_TIMEOUT = "Network timeout"
 const val UNKNOWN_ERROR = "Unknown error"
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 fun <Result> networkBoundResource(
     fetch: suspend () -> Result,
 ) = flow<Resource<Result>> {

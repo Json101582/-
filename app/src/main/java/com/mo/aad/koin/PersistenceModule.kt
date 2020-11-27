@@ -20,6 +20,7 @@ import androidx.room.Room
 import com.mo.aad.R
 import com.mo.aad.features.poked.dao.AppDatabase
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val persistenceModule = module {
@@ -36,11 +37,11 @@ val persistenceModule = module {
             .build()
     }
 
-    single {
+    single(named("PokemonDa")) {
         get<AppDatabase>().mPokemonDao()
     }
 
-    single {
+    single(named("PokemonInfoDao")) {
          get<AppDatabase>().mPokemonInfoDao()
     }
 }

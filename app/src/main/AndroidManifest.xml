@@ -37,6 +37,8 @@
         <activity
             android:name=".features.poked.ui.PokedActivity"
             android:theme="@style/AppWriteTheme" />
+        <activity android:name=".features.poked.ui.PokedDetailNewActivity"
+            android:theme="@style/AppWriteTheme" />
     </application>
 
 </manifest>

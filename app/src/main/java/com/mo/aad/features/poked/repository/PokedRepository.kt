@@ -2,7 +2,6 @@ package com.mo.aad.features.poked.repository
 
 
 import android.util.Log
-import androidx.annotation.UiThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.liveData
 import com.mo.aad.features.poked.dao.PokemonDao
@@ -23,8 +22,6 @@ import java.io.IOException
  * <p>
  * Description:
  */
-@ExperimentalCoroutinesApi
-@FlowPreview
 class PokedRepository constructor(
     private val pokedService: PokedService) {
     private val tag = "PokedRepository"

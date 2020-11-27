@@ -35,8 +35,6 @@ class LearningAdapter(val items: List<LearningHoursUser>,var mOnItemClickListene
 }
 
 class LearningViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView) {
-    @ExperimentalCoroutinesApi
-    @FlowPreview
     @SuppressLint("SetTextI18n")
     fun bind(item: LearningHoursUser, mOnItemClickListener: OnItemViewClickListener, pos:Int) = with(itemView) {
 

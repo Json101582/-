@@ -8,16 +8,12 @@ import com.mo.aad.extensions.show
 import com.mo.aad.features.submission.viewmodel.SubmissionViewModel
 import com.mo.aad.network.Status
 import kotlinx.android.synthetic.main.activity_submission.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SubmissionActivity : AppCompatActivity(R.layout.activity_submission),
     AreYouSureDialog.AreYouSureDialogListener {
 
-    @ExperimentalCoroutinesApi
-    @FlowPreview
     private val viewModel: SubmissionViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,8 +25,6 @@ class SubmissionActivity : AppCompatActivity(R.layout.activity_submission),
         }
     }
 
-    @ExperimentalCoroutinesApi
-    @FlowPreview
     override fun onYesClick() {
         viewModel.submissionLiveData.observe(this, {
             when (it.status) {

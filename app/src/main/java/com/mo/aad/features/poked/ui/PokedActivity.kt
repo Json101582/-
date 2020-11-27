@@ -15,15 +15,12 @@ import com.mo.aad.network.Status
 import kotlinx.android.synthetic.main.activity_poked.*
 import kotlinx.android.synthetic.main.layout_item.view.*
 import kotlinx.android.synthetic.main.title_layout.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 
 
-@ExperimentalCoroutinesApi
-@FlowPreview
+
 class PokedActivity : AppCompatActivity(), OnItemViewClickListener {
 
     private val mPokedModel:PokedViewModel by viewModel()

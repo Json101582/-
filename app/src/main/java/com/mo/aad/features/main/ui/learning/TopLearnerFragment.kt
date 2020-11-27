@@ -15,14 +15,12 @@ import com.mo.aad.features.main.viewmodel.MainViewModel
 import com.mo.aad.features.poked.ui.PokedActivity
 import com.mo.aad.network.Status
 import kotlinx.android.synthetic.main.fragment_recycler.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+
 
 
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-@ExperimentalCoroutinesApi
-@FlowPreview
+
 class TopLearnerFragment : LazyFragment(), OnItemViewClickListener {
 
     private val viewModel: MainViewModel by sharedViewModel()
@@ -63,6 +61,5 @@ class TopLearnerFragment : LazyFragment(), OnItemViewClickListener {
     override fun onItemClick(itemView: View, position: Int) {
         val mainIntent = Intent(activity, PokedActivity::class.java)
         startActivity(mainIntent)
-
     }
 }

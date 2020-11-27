@@ -6,12 +6,9 @@ import com.mo.aad.features.main.remote.LearningAPIService
 import com.mo.aad.features.main.remote.SkillIQAPIService
 import com.mo.aad.network.Resource
 import com.mo.aad.network.networkBoundResource
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 
-@ExperimentalCoroutinesApi
-@FlowPreview
+
 class MainRepository(
     private val skillIQAPIService: SkillIQAPIService,
     private val learningAPIService: LearningAPIService

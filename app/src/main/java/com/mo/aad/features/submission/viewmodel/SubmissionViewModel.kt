@@ -5,14 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mo.aad.features.submission.repository.SubmissionRepository
 import com.mo.aad.network.Resource
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 
-@FlowPreview
-@ExperimentalCoroutinesApi
+
 class SubmissionViewModel(private val repo: SubmissionRepository) : ViewModel() {
 
     val submissionLiveData: MutableLiveData<Resource<Unit>> = MutableLiveData()

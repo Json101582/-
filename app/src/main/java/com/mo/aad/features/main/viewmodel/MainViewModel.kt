@@ -5,12 +5,9 @@ import com.mo.aad.features.main.data.LearningHoursUser
 import com.mo.aad.features.main.data.SkillsScoreUser
 import com.mo.aad.features.main.repository.MainRepository
 import com.mo.aad.network.Resource
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 
-@FlowPreview
-@ExperimentalCoroutinesApi
+
 class MainViewModel(private val repo: MainRepository) : ViewModel() {
 
     val topLearnersLiveData: MutableLiveData<Resource<List<LearningHoursUser>>> = MutableLiveData()
